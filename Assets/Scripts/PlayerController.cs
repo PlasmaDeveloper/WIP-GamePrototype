@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
 
     //values
     float playerSpeed = 12.0f;
+    float runMultiplier = 2.0f; //amount the playerSpeed is multiplied with, when running
     float jumpHeight = 3.0f;
 
     float gravity = -9.81f;     //gravity strenght
@@ -47,7 +48,18 @@ public class PlayerController : MonoBehaviour
         float inputAxisY = Input.GetAxis("Vertical");
 
         Vector3 movePosition = transform.right * inputAxisX + transform.forward * inputAxisY;
-        playerController.Move(movePosition * playerSpeed * Time.deltaTime);
+
+        //let player run, when pressing shift
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            Debug.Log("Is running");
+            playerController.Move(movePosition * (playerSpeed * runMultiplier) * Time.deltaTime);
+        }
+        else
+        {
+            playerController.Move(movePosition * playerSpeed * Time.deltaTime);
+        }
+        
     }
 
     void PlayerFallDown()
