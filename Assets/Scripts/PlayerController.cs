@@ -5,29 +5,29 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     //objects and componets
-    CharacterController playerController;
-    Transform groundCheck;      //object to set position for the ground check
+    private CharacterController playerController;
+    private Transform groundCheck;      //object to set position for the ground check
 
     //values
-    float playerSpeed = 12.0f;
-    float runMultiplier = 2.0f; //amount the playerSpeed is multiplied with, when running
-    float jumpHeight = 3.0f;
+    private float playerSpeed = 12.0f;
+    private float runMultiplier = 2.0f; //amount the playerSpeed is multiplied with, when running
+    private float jumpHeight = 3.0f;
 
-    float gravity = -9.81f;     //gravity strenght
-    Vector3 velocity;       //current fallspeed
+    private float gravity = -9.81f;     //gravity strenght
+    private Vector3 velocity;       //current fallspeed
 
-    float groundDistrance = 0.4f;       //size of the area checked for is grounded
+    private float groundDistrance = 0.4f;       //size of the area checked for is grounded
     [SerializeField] LayerMask groundMask;       //defines which objects are the ground
-    bool playerIsGrounded;
+    private bool playerIsGrounded;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         SetupScript();
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         IsPlayerGrounded();
         PlayerMovement();
@@ -35,14 +35,14 @@ public class PlayerController : MonoBehaviour
         PlayerFallDown();
     }
 
-    void SetupScript()
+    private void SetupScript()
     {
         playerController = GetComponent<CharacterController>();
         groundCheck = transform.Find("GroundCheck");
 
     }
 
-    void PlayerMovement()
+    private void PlayerMovement()
     {
         float inputAxisX = Input.GetAxis("Horizontal");
         float inputAxisY = Input.GetAxis("Vertical");
@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
         //let player run, when pressing shift
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            Debug.Log("Is running");
+            //Debug.Log("Is running");
             playerController.Move(movePosition * (playerSpeed * runMultiplier) * Time.deltaTime);
         }
         else
@@ -62,13 +62,13 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    void PlayerFallDown()
+    private void PlayerFallDown()
     {
         velocity.y += gravity * Time.deltaTime;
         playerController.Move(velocity * Time.deltaTime);
     }
 
-    void PlayerJump()
+    private void PlayerJump()
     {
         if (Input.GetButtonDown("Jump") && playerIsGrounded)
         {
@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void ResetVelocity()
+    private void ResetVelocity()
     {
         if (playerIsGrounded && velocity.y < 0)
         {
@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void IsPlayerGrounded()
+    private void IsPlayerGrounded()
     {
         playerIsGrounded = Physics.CheckSphere(groundCheck.position, groundDistrance, groundMask);
         //Debug.Log(playerIsGrounded);
